@@ -10,11 +10,11 @@ classDiagram
     BasicDoc <|-- HomeDoc
     BasicDoc <|-- AboutDoc
     BasicDoc <|-- FormDoc
-    BasicDoc <|-- ProductsDoc
 
     FormDoc <|-- ContactDoc
     FormDoc <|-- LoginDoc
     FormDoc <|-- RegisterDoc
+    FormDoc <|-- ProductsDoc
 
     ProductsDoc <|-- WebshopDoc
     ProductsDoc <|-- DetailDoc
@@ -54,6 +54,13 @@ classDiagram
     }
     class FormDoc{
         <<abstract>>
+        #showFormStart()
+        #showFormField()
+        #inputField()
+        #selectField()
+        #radioField()
+        #textAreaField()
+        #showFormEnd()
     }
     class ContactDoc{
         #showHeader()
