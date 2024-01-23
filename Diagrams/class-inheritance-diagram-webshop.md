@@ -10,6 +10,7 @@ classDiagram
     BasicDoc <|-- HomeDoc
     BasicDoc <|-- AboutDoc
     BasicDoc <|-- FormDoc
+    BasicDoc <|-- ProductsDoc
 
     FormDoc <|-- ContactDoc
     FormDoc <|-- LoginDoc
