@@ -8,54 +8,54 @@
         return $header;
     }
     
-    function showContactContent($valsAndErrs) {
-        if ($valsAndErrs['valid']) {
-            displayThanks($valsAndErrs);
+    function showContactContent($data) {
+        if ($data['valid']) {
+            displayThanks($data);
         } else {
-            displayContactForm($valsAndErrs);
+            displayContactForm($data);
         }
     }
     
-    function displayContactForm($valsAndErrs) {
+    function displayContactForm($data) {
         showFormStart('contact');
         
         //selection for title
-        showFormField('title', 'Kies uw aanhef:', 'select', $valsAndErrs, TITLES);
+        showFormField('title', 'Kies uw aanhef:', 'select', $data, TITLES);
         
         //input for name
-        showFormField('name', 'Naam:', 'text', $valsAndErrs);
+        showFormField('name', 'Naam:', 'text', $data);
         //input for email
-        showFormField('email', 'Email:', 'email', $valsAndErrs);
+        showFormField('email', 'Email:', 'email', $data);
         //input for phone
-        showFormField('phone', 'Tel. nr.:', 'text', $valsAndErrs);
+        showFormField('phone', 'Tel. nr.:', 'text', $data);
 
         echo '    <h4>Adres</h4>' . PHP_EOL;
         
         //input for address fields (street, number, postal code, city)
-        showFormField('street', 'Straat:', 'text', $valsAndErrs);
-        showFormField('streetNo', 'Nr. + Toevoeging:', 'text', $valsAndErrs);
-        showFormField('postcode', 'Postcode:', 'text', $valsAndErrs);
-        showFormField('city', 'Woonplaats:', 'text', $valsAndErrs);
+        showFormField('street', 'Straat:', 'text', $data);
+        showFormField('streetNo', 'Nr. + Toevoeging:', 'text', $data);
+        showFormField('postcode', 'Postcode:', 'text', $data);
+        showFormField('city', 'Woonplaats:', 'text', $data);
         
         echo '        <br>' . PHP_EOL;
         
         //input for communication preference
-        showFormField('preference', 'Communicatie Voorkeur', 'radio', $valsAndErrs, COMM_PREFS);
+        showFormField('preference', 'Communicatie Voorkeur', 'radio', $data, COMM_PREFS);
         
         echo '        <br>' . PHP_EOL;
         
         //textbox for message
-        showFormField('message', 'Bericht', 'textarea', $valsAndErrs, ['rows' => 10, 'cols' => 30], 'Vul in waar u contact over wil opnemen.');
+        showFormField('message', 'Bericht', 'textarea', $data, ['rows' => 10, 'cols' => 30], 'Vul in waar u contact over wil opnemen.');
         
         showFormEnd('Verzenden');
     }
     
-    function displayThanks($valsAndErrs) {
+    function displayThanks($data) {
         echo '<p>Bedankt voor uw reactie<p>
-<div>Naam: ' . $valsAndErrs['title'] . ' ' . $valsAndErrs['name'] . ' </div>
-<div>Email: ' . $valsAndErrs['email'] . ' </div>
-<div>Tel. nr.: ' . $valsAndErrs['phone'] . ' </div>
-<div>Adres: ' . $valsAndErrs['street'] . ', ' . $valsAndErrs['streetNo'] . ', ' . $valsAndErrs['postcode'] . ', ' . $valsAndErrs['city'] . ' </div><br>';
+<div>Naam: ' . $data['title'] . ' ' . $data['name'] . ' </div>
+<div>Email: ' . $data['email'] . ' </div>
+<div>Tel. nr.: ' . $data['phone'] . ' </div>
+<div>Adres: ' . $data['street'] . ', ' . $data['streetNo'] . ', ' . $data['postcode'] . ', ' . $data['city'] . ' </div><br>';
 
     }
     
@@ -138,10 +138,10 @@
             //update valid boolean after all error checking
             $valid = empty($titleErr) && empty($nameErr) && empty($messageErr) && empty($emailErr) && empty($phoneErr) && empty($preferenceErr) && empty($streetErr) && empty($streetNoErr) && empty($postcodeErr) && empty($cityErr);
         }
-        $valsAndErrs = array('valid'=>$valid, 'title'=>$title, 'name'=>$name, 'message'=>$message, 'email'=>$email, 'phone'=>$phone, 'preference'=>$preference,
-                               'street'=>$street, 'streetNo'=>$streetNo, 'postcode'=>$postcode, 'city'=>$city,
-                               'titleErr'=>$titleErr, 'nameErr'=>$nameErr, 'messageErr'=>$messageErr, 'emailErr'=>$emailErr, 'phoneErr'=>$phoneErr, 'preferenceErr'=>$preferenceErr,
-                               'streetErr'=>$streetErr, 'streetNoErr'=>$streetNoErr, 'postcodeErr'=>$postcodeErr, 'cityErr'=>$cityErr);
-        return $valsAndErrs;
+        $data = array('valid'=>$valid, 'title'=>$title, 'name'=>$name, 'message'=>$message, 'email'=>$email, 'phone'=>$phone, 'preference'=>$preference,
+                        'street'=>$street, 'streetNo'=>$streetNo, 'postcode'=>$postcode, 'city'=>$city,
+                        'titleErr'=>$titleErr, 'nameErr'=>$nameErr, 'messageErr'=>$messageErr, 'emailErr'=>$emailErr, 'phoneErr'=>$phoneErr, 'preferenceErr'=>$preferenceErr,
+                        'streetErr'=>$streetErr, 'streetNoErr'=>$streetNoErr, 'postcodeErr'=>$postcodeErr, 'cityErr'=>$cityErr);
+        return $data;
     }
 ?>

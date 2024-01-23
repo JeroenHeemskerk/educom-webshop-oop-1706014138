@@ -7,8 +7,8 @@
     require_once('user_service.php');
 
     $page = getRequestedPage();
-    $valsAndErrs = processRequest($page);
-    showResponsePage($valsAndErrs);
+    $data = processRequest($page);
+    showResponsePage($data);
     
     function getRequestedPage() {
         $method = $_SERVER['REQUEST_METHOD'];
@@ -24,17 +24,17 @@
         switch ($page) {
             case 'contact':
                 require_once('contact.php');
-                $valsAndErrs = validateContact();
+                $data = validateContact();
                 // currently no separate thank you page
-                // if ($valsAndErrs['valid']) {
+                // if ($data['valid']) {
                     // $page = 'thanks';
                 // }
                 break;
             case 'login':
                 require_once('login.php');
-                $valsAndErrs = validateLogin();
-                if ($valsAndErrs['valid'] && !empty($valsAndErrs['connectionErr'])) {
-                    loginUser($valsAndErrs['name'], $valsAndErrs['userId']);
+                $data = validateLogin();
+                if ($data['valid'] && !empty($data['connectionErr'])) {
+                    loginUser($data['name'], $data['userId']);
                     $page = 'home';
                 }
                 break;
@@ -45,15 +45,15 @@
             case 'register':
                 require_once('register.php');
                 try {
-                    $valsAndErrs = validateRegistration();
-                    if ($valsAndErrs['valid']) {
-                        addUser($valsAndErrs);
-                        $valsAndErrs['pass'] = ''; //remove pass, else it will be pre-filled
+                    $data = validateRegistration();
+                    if ($data['valid']) {
+                        addUser($data);
+                        $data['pass'] = ''; //remove pass, else it will be pre-filled
                         $page = 'login';
                     }
                 }
                 catch (Exception $ex) {
-                    $valsAndErrs['connectionErr'] = "Er is een technische storing opgetreden, registratie is niet mogelijk. Probeer het later opnieuw.";
+                    $data['connectionErr'] = "Er is een technische storing opgetreden, registratie is niet mogelijk. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
@@ -61,10 +61,10 @@
             case 'detail':
                 try {
                     handleCartActions();
-                    $valsAndErrs['product'] = getProducts([getUrlVar('productId')])[0];
+                    $data['product'] = getProducts([getUrlVar('productId')])[0];
                 }
                 catch (Exception $ex) {
-                    $valsAndErrs['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+                    $data['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
@@ -72,10 +72,10 @@
             case 'webshop':
                 try {
                     handleCartActions();
-                    $valsAndErrs['products'] = getProductList();
+                    $data['products'] = getProductList();
                 }
                 catch (Exception $ex) {
-                    $valsAndErrs['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+                    $data['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
@@ -83,10 +83,10 @@
             case 'cart':
                 try {
                     handleCartActions();
-                    $valsAndErrs['cartItems'] = getCartItems();
+                    $data['cartItems'] = getCartItems();
                 }
                 catch (Exception $ex) {
-                    $valsAndErrs['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+                    $data['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
@@ -94,24 +94,24 @@
             case 'topfive':
                 try {
                     handleCartActions();
-                    $valsAndErrs['products'] = getTopFiveProducts();
+                    $data['products'] = getTopFiveProducts();
                 }
                 catch (Exception $ex) {
-                    $valsAndErrs['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+                    $data['connectionErr'] = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
                 break;
         }
         
-        $valsAndErrs['page'] = $page;
-        return $valsAndErrs;
+        $data['page'] = $page;
+        return $data;
     }
     
-    function showResponsePage($valsAndErrs) {
+    function showResponsePage($data) {
         beginDocument();
         showHeadSection();
-        showBodySection($valsAndErrs);
+        showBodySection($data);
         endDocument();
     }
     
@@ -142,11 +142,11 @@
         echo '    </head>' . PHP_EOL;
     } 
 
-    function showBodySection($valsAndErrs) {
+    function showBodySection($data) {
         echo '    <body>' . PHP_EOL;
-        showHeader($valsAndErrs['page']);
+        showHeader($data['page']);
         showMenu();
-        showContent($valsAndErrs);
+        showContent($data);
         showFooter();
         echo '    </body>' . PHP_EOL;
     } 
@@ -223,8 +223,8 @@
         echo '        <li><a href="index.php?page=' . $link . '">' . $label . '</a></li>' . PHP_EOL;
     }
 
-    function showContent($valsAndErrs) { 
-        switch ($valsAndErrs['page']) 
+    function showContent($data) { 
+        switch ($data['page']) 
         { 
             case 'home':
                 require_once('home.php');
@@ -236,31 +236,31 @@
                 break;
             case 'contact':
                 require_once('contact.php');
-                showContactContent($valsAndErrs);
+                showContactContent($data);
                 break;
             case 'register':
                 require_once('register.php');
-                showRegisterContent($valsAndErrs);
+                showRegisterContent($data);
                 break;
             case 'login':
                 require_once('login.php');
-                showLoginContent($valsAndErrs);
+                showLoginContent($data);
                 break;
             case 'webshop':
                 require_once('webshop.php');
-                showWebshopContent($valsAndErrs);
+                showWebshopContent($data);
                 break;
             case 'detail':
                 require_once('detail.php');
-                showDetailContent($valsAndErrs);
+                showDetailContent($data);
                 break;
             case 'cart':
                 require_once('cart.php');
-                showCartContent($valsAndErrs);
+                showCartContent($data);
                 break;
             case 'topfive':
                 require_once('top_five.php');
-                showTopFiveContent($valsAndErrs);
+                showTopFiveContent($data);
                 break;
             default:
                 //require('404.php');
@@ -378,21 +378,21 @@
     }
     
     //function to display a text input as well as its label and error message
-    function showFormField($id, $label, $type, $valsAndErrs, $options=NULL, $placeholder=NULL) {
+    function showFormField($id, $label, $type, $data, $options=NULL, $placeholder=NULL) {
         switch ($type) {
             case 'text':
             case 'password':
             case 'email':
-                inputField($id, $label, $type, $valsAndErrs);
+                inputField($id, $label, $type, $data);
                 break;
             case 'radio':
-                radioField($id, $label, $type, $valsAndErrs, $options);
+                radioField($id, $label, $type, $data, $options);
                 break;
             case 'select':
-                selectField($id, $label, $type, $valsAndErrs, $options);
+                selectField($id, $label, $type, $data, $options);
                 break;
             case 'textarea':
-                textAreaField($id, $label, $type, $valsAndErrs, $options, $placeholder);
+                textAreaField($id, $label, $type, $data, $options, $placeholder);
                 break;
             default:
                 //error
@@ -400,50 +400,50 @@
         }
     }
     
-    function inputField($id, $label, $type, $valsAndErrs) {
+    function inputField($id, $label, $type, $data) {
         echo '        <div class="inputfield">
             <label for="' . $id . '">' . $label . '</label>
-            <input type="' . $type . '" value="' . $valsAndErrs[$id] . '" id="' . $id . '" name="' . $id . '">
-            <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
+            <input type="' . $type . '" value="' . $data[$id] . '" id="' . $id . '" name="' . $id . '">
+            <span class="error">' . $data[$id.'Err'] . '</span><br>
         </div>' . PHP_EOL;
     }
     
-    function selectField($id, $label, $type, $valsAndErrs, $options) {
+    function selectField($id, $label, $type, $data, $options) {
         echo '        <div class="'. $id .'">
             <label for="'. $id .'">'.$label.'</label>
             <select name="'. $id .'" id="'. $id .'">' . PHP_EOL;
 
-        echo '            <option value="" disabled ' . ($valsAndErrs[$id] == '' ? 'selected="true"' : '');
+        echo '            <option value="" disabled ' . ($data[$id] == '' ? 'selected="true"' : '');
         echo '>Selecteer een optie</option>' . PHP_EOL;
         
         foreach ($options as $option => $optionLabel) {
-            echo '<option value="'.$optionLabel.'" ' . ($valsAndErrs[$id] == $optionLabel ? 'selected="true"' : '');
+            echo '<option value="'.$optionLabel.'" ' . ($data[$id] == $optionLabel ? 'selected="true"' : '');
             echo '>'.$optionLabel.'</option>';
         }
 
         echo '        </select>
-            <span class="error">' . $valsAndErrs[$id.'Err'] . '</span>
+            <span class="error">' . $data[$id.'Err'] . '</span>
         </div><br>' . PHP_EOL;
     }
     
-    function radioField($id, $label, $type, $valsAndErrs, $options) {
+    function radioField($id, $label, $type, $data, $options) {
         echo '        <label for="'.$id.'">'.$label.'</label>
-        <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>'.PHP_EOL;
+        <span class="error">' . $data[$id.'Err'] . '</span><br>'.PHP_EOL;
         
         foreach($options as $option => $optionLabel) {
-            echo '<input type="radio" id="'.$option.'Option'.'" name="'.$id.'" value="'.$option.'" ' . ($valsAndErrs[$id] == $option ? "checked" : ''); 
+            echo '<input type="radio" id="'.$option.'Option'.'" name="'.$id.'" value="'.$option.'" ' . ($data[$id] == $option ? "checked" : ''); 
             echo '>
         <label for="'.$option.'Option'.'">'.$optionLabel.'</label><br>'.PHP_EOL;
         }
     }
     
-    function textAreaField($id, $label, $type, $valsAndErrs, $options, $placeholder) {
-        echo '        <label for="'.$id.'">'.$label.'</label> <span class="error">' . $valsAndErrs[$id.'Err'] . '</span><br>
+    function textAreaField($id, $label, $type, $data, $options, $placeholder) {
+        echo '        <label for="'.$id.'">'.$label.'</label> <span class="error">' . $data[$id.'Err'] . '</span><br>
         <textarea name="'.$id.'" placeholder="'.$placeholder.'"';
         foreach($options as $key => $value){
             echo ' '.$key.'="'.$value.'"';
         }
-        echo '>' . $valsAndErrs[$id] . '</textarea><br>
+        echo '>' . $data[$id] . '</textarea><br>
         <br>';
     }
     

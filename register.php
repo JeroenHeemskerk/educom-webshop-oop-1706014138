@@ -4,28 +4,28 @@
         return $header;
     }
 
-    function showRegisterContent($valsAndErrs) {
-        if (isset($valsAndErrs['connectionErr'])) {
-            echo "<p>".$valsAndErrs['connectionErr']."</p>".PHP_EOL;
+    function showRegisterContent($data) {
+        if (isset($data['connectionErr'])) {
+            echo "<p>".$data['connectionErr']."</p>".PHP_EOL;
         } else {
-            displayRegistrationForm($valsAndErrs);
+            displayRegistrationForm($data);
         }
     }
 
-    function displayRegistrationForm($valsAndErrs) {
+    function displayRegistrationForm($data) {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
         
         showFormStart('register');
         
         //input for name
-        showFormField('name', 'Naam:', 'text', $valsAndErrs);
+        showFormField('name', 'Naam:', 'text', $data);
         //input for email
-        showFormField('email', 'Email:', 'email', $valsAndErrs);
+        showFormField('email', 'Email:', 'email', $data);
         
         //input for password
-        showFormField('pass', 'Wachtwoord:', 'password', $valsAndErrs);
-        showFormField('passConfirm', 'Wachtwoord Herhalen:', 'password', $valsAndErrs);
+        showFormField('pass', 'Wachtwoord:', 'password', $data);
+        showFormField('passConfirm', 'Wachtwoord Herhalen:', 'password', $data);
 
         echo '        <br><br>' . PHP_EOL;
 
@@ -64,8 +64,8 @@
             //update valid boolean after all error checking
             $valid = empty($nameErr) && empty($emailErr) && empty($passErr) && empty($passConfirmErr);
         }
-        $valsAndErrs = array('valid'=>$valid, 'name'=>$name, 'email'=>$email, 'pass'=>$pass, 'passConfirm'=>$passConfirm,
+        $data = array('valid'=>$valid, 'name'=>$name, 'email'=>$email, 'pass'=>$pass, 'passConfirm'=>$passConfirm,
                              'nameErr'=>$nameErr, 'emailErr'=>$emailErr, 'passErr'=>$passErr, 'passConfirmErr'=>$passConfirmErr);
-        return $valsAndErrs;
+        return $data;
     }
 ?>

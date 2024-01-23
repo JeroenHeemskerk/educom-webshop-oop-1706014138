@@ -4,25 +4,25 @@
         return $header;
     }
     
-    function showLoginContent($valsAndErrs) {
-        if (!empty($valsAndErrs['connectionErr'])) {
-            echo "<p>".$valsAndErrs['connectionErr']."</p>".PHP_EOL;
+    function showLoginContent($data) {
+        if (!empty($data['connectionErr'])) {
+            echo "<p>".$data['connectionErr']."</p>".PHP_EOL;
         } else {
-            displayLoginForm($valsAndErrs);
+            displayLoginForm($data);
         }
     }
     
-    function displayLoginForm($valsAndErrs) {
+    function displayLoginForm($data) {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
         
         showFormStart('login');
         
         //input for email
-        showFormField('email', 'Email:', 'email', $valsAndErrs);
+        showFormField('email', 'Email:', 'email', $data);
         
         //input for password
-        showFormField('pass', 'Wachtwoord:', 'password', $valsAndErrs);
+        showFormField('pass', 'Wachtwoord:', 'password', $data);
 
         echo '        <br><br>' . PHP_EOL;
 
@@ -68,8 +68,8 @@
             //update valid boolean after all error checking
             $valid = empty($nameErr) && empty($emailErr) && empty($passErr) && empty($passConfirmErr);
         }
-        $valsAndErrs = array('valid'=>$valid, 'email'=>$email, 'pass'=>$pass, 'name'=>$name, 'userId'=>$userId,
+        $data = array('valid'=>$valid, 'email'=>$email, 'pass'=>$pass, 'name'=>$name, 'userId'=>$userId,
                              'emailErr'=>$emailErr, 'passErr'=>$passErr, 'connectionErr'=>$connectionErr);
-        return $valsAndErrs;
+        return $data;
     }
 ?>
