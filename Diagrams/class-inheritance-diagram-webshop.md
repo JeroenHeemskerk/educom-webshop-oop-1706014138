@@ -81,7 +81,7 @@ classDiagram
         #showAddToCartForm()
         #showProductList()
     }
-    class WebShopDoc{
+    class WebshopDoc{
         #showHeader()
         #showContent()
     }
