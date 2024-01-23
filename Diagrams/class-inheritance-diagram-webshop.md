@@ -13,6 +13,12 @@ classDiagram
 
     FormDoc <|-- ContactDoc
     FormDoc <|-- LoginDoc
+    FormDoc <|-- RegisterDoc
+
+    ProductsDoc <|-- WebshopDoc
+    ProductsDoc <|-- DetailDoc
+    ProductsDoc <|-- CartDoc
+    ProductsDoc <|-- Top5Doc
 
     class HtmlDoc{
        +show()
@@ -53,6 +59,26 @@ classDiagram
         #showContent()
     }
     class LoginDoc{
+        #showHeader()
+        #showContent()
+    }
+    class RegisterDoc{
+        #showHeader()
+        #showContent()
+    }
+
+    class ProductsDoc{
+        <<abstract>>
+    }
+    class ContactDoc{
+        #showHeader()
+        #showContent()
+    }
+    class LoginDoc{
+        #showHeader()
+        #showContent()
+    }
+    class RegisterDoc{
         #showHeader()
         #showContent()
     }
