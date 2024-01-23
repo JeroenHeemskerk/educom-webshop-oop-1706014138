@@ -55,11 +55,12 @@ classDiagram
     class FormDoc{
         <<abstract>>
         #showFormStart()
+        #showHiddenField()
         #showFormField()
-        #inputField()
-        #selectField()
-        #radioField()
-        #textAreaField()
+        -inputField()
+        -selectField()
+        -radioField()
+        -textAreaField()
         #showFormEnd()
     }
     class ContactDoc{
@@ -77,16 +78,22 @@ classDiagram
 
     class ProductsDoc{
         <<abstract>>
+        #showAddToCartForm()
+        #showProductList()
     }
-    class ContactDoc{
+    class WebShopDoc{
         #showHeader()
         #showContent()
     }
-    class LoginDoc{
+    class DetailDoc{
         #showHeader()
         #showContent()
     }
-    class RegisterDoc{
+    class CartDoc{
+        #showHeader()
+        #showContent()
+    }
+    class Top5Doc{
         #showHeader()
         #showContent()
     }
