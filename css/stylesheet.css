@@ -1,0 +1,138 @@
+/* Cascade Style Sheet for this website */
+html {
+	height: 100%;
+}
+body {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+	width: 800px;
+	color: #444444;
+}
+
+h1 {
+	color: black;
+	font-size: 48px;
+	text-align: center;
+}
+
+.centered {
+	text-align: center;
+}
+
+.title {
+	display: block;
+	margin-bottom: 20px;
+}
+
+ul.menu {
+	text-align: center;
+	list-style-type: none;
+	padding: 0;
+}
+
+ul.menu li {
+	text-align: center;
+	display: inline;
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	background-color: darkblue;
+	padding: 4px 8px;
+}
+
+ul.menu li a {
+	color: white;
+	text-decoration: none;
+}
+
+footer > p {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	margin-bottom: 0;
+	width: 100%;
+	background-color: black;
+	color: white;
+	font-size: 10px;
+	text-align: right;
+	padding: 4px 8px;
+	box-sizing: border-box;
+}
+
+p {
+	font-size: 12px;
+	background-color: white;
+}
+
+input[type=submit] {
+	color: #444444;
+}
+
+div.inputfield > label {
+	display: inline-block;
+	float: left;
+	clear: left;
+	width: 150px;
+}
+
+div.inputfield > input {
+	display: inline-block;
+	float: left;
+	width: 400px;
+}
+div.inputfield > .error {
+	display: inline-block;
+	margin-left: 5px;
+	float: left;
+	width: 180px;
+}
+
+textarea {
+	width: 400px;
+	color: #444444;
+}
+
+.error {
+	color: red;
+}
+
+th {
+	padding-right: 15px;
+	text-align: left;
+}
+
+td {
+	padding-right: 15px;
+}
+
+.webshop_img {
+	width: 150px;
+	border: 3px solid black;
+}
+
+.webshop_link {
+	color: #444444;
+}
+
+.detail_img {
+	width: 50%;
+}
+
+.webshop_input {
+	width: 50px;
+	margin-right: 5px;
+}
+
+form {
+	display: inline;
+}
+
+.form_submit {
+	min-width: 21px;
+}
+
+.product-table {
+	margin-left: auto;
+	margin-right: auto;
+}
