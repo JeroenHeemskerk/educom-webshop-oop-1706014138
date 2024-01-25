@@ -3,6 +3,10 @@
 require_once('FormDoc.php');
 
 class LoginDoc extends FormDoc {
+    protected function showHeader() {
+        echo '    <h1>Login Pagina</h1>' . PHP_EOL;
+    }
+
     protected function showContent() {
         if (!empty($this->data['connectionErr'])) {
             echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;

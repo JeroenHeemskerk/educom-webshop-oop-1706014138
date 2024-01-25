@@ -3,31 +3,20 @@
 require_once('HtmlDoc.php');
 
 class BasicDoc extends HtmlDoc {
-    protected $data;
+    protected $model;
 
-    public function __construct($d) {
-        $this->data = $d;
+    public function __construct($model) {
+        $this->model = $model;
     }
 
-    private function showHeader() {
-        echo '    <h1>' . $this->data['header'] . '</h1>' . PHP_EOL;
+    protected function showHeader() {
 
     }
 
     private function showMenu() {
         echo '    <ul class="menu">' . PHP_EOL;
-        $this->showMenuItem('home', 'HOME');
-        $this->showMenuItem('about', 'ABOUT');
-        $this->showMenuItem('contact', 'CONTACT');
-        $this->showMenuItem('webshop', 'WEBSHOP');
-        $this->showMenuItem('topfive', 'TOP 5');
-        require_once('../session_manager.php');
-        if (isUserLoggedIn()) {
-            $this->showMenuItem('cart', 'SHOPPING CART');
-            $this->showMenuItem('logout', 'LOGOUT ' . getLoggedInUsername());
-        } else {
-            $this->showMenuItem('register', 'REGISTER');
-            $this->showMenuItem('login', 'LOGIN');
+        foreach($model->menu as $key=>$value) {
+            $this->showMenuItem($key, $value);
         }
         echo '    </ul>' . PHP_EOL;
     }
@@ -52,7 +41,6 @@ class BasicDoc extends HtmlDoc {
         $this->showContent();
         $this->showFooter();
     }
-
 }
 
 ?>

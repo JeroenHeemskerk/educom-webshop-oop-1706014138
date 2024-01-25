@@ -3,6 +3,10 @@
 require_once('FormDoc.php');
 
 class RegisterDoc extends FormDoc {
+    protected function showHeader() {
+        echo '    <h1>Registratie Pagina</h1>' . PHP_EOL;
+    }
+
     protected function showContent() {
         if (isset($this->data['connectionErr'])) {
             echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;

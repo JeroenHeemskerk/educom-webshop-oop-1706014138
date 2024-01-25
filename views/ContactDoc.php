@@ -6,6 +6,10 @@ define("TITLES", array("mr."=>"Dhr.", "mrs."=>"Mvr.", "dr." => "Dr.", "prof." =>
 define("COMM_PREFS", array("email" => "E-Mail", "phone" => "Telefoon", "mail" => "Post"));
 
 class ContactDoc extends FormDoc {
+    protected function showHeader() {
+        echo '    <h1>Contact Pagina</h1>' . PHP_EOL;
+    }
+
     protected function showContent() {
         if ($this->data['valid']) {
             $this->displayThanks($this->data);
