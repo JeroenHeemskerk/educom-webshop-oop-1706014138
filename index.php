@@ -3,12 +3,10 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    require_once('session_manager.php');
-    require_once('user_service.php');
+    require_once('controllers/PageController.php');
 
-    $page = getRequestedPage();
-    $data = processRequest($page);
-    showResponsePage($data);
+    $controller = new PageController();
+    $controller->handleRequest();
     
     function getRequestedPage() {
         $method = $_SERVER['REQUEST_METHOD'];
