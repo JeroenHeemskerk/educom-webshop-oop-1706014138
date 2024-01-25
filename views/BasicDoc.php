@@ -15,7 +15,7 @@ class BasicDoc extends HtmlDoc {
 
     private function showMenu() {
         echo '    <ul class="menu">' . PHP_EOL;
-        foreach($model->menu as $key=>$value) {
+        foreach($this->model->menu as $key=>$value) {
             $this->showMenuItem($key, $value);
         }
         echo '    </ul>' . PHP_EOL;

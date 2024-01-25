@@ -11,7 +11,7 @@ class HtmlDoc {
     }
 
     protected function showHeadContent() {
-        echo '        <link rel="stylesheet" href="../css/stylesheet.css">' . PHP_EOL;
+        echo '        <link rel="stylesheet" href="css/stylesheet.css">' . PHP_EOL;
     }
 
     private function showHeadEnd() {
