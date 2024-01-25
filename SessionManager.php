@@ -1,5 +1,5 @@
 <?php
-
+class SessionManager {
     function isUserLoggedIn() {
         return isset($_SESSION['name']);
         // || $_SESSION['name'] != NULL;
@@ -50,5 +50,6 @@
     function getCartItems() {
         return isset($_SESSION['cart']) ? $_SESSION['cart'] : NULL;
     }
+}
 
 ?>
