@@ -48,7 +48,7 @@ class SessionManager {
     }
 
     function getCartItems() {
-        return isset($_SESSION['cart']) ? $_SESSION['cart'] : NULL;
+        return isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
     }
 }
 
