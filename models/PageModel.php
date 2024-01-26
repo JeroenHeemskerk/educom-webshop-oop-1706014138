@@ -5,7 +5,7 @@ class PageModel {
     protected $isPost = false;
     public $menu;
     public $errors = array();
-    public $genericErr;
+    public $connectionErr;
     protected $sessionManager;
 
     public function __construct($copy) {
@@ -17,7 +17,7 @@ class PageModel {
             $this->isPost = $copy->isPost;
             $this->menu = $copy->menu;
             $this->errors = $copy->errors;
-            $this->genericErr = $copy->genericErr;
+            $this->connectionErr = $copy->connectionErr;
             $this->sessionManager = $copy->sessionManager;
         }
     }
@@ -46,7 +46,7 @@ class PageModel {
         $this->menu['topfive'] = 'TOP 5';
         if ($this->isUserLoggedIn()) {
             $this->menu['cart'] = 'SHOPPING CART';
-            $this->menu['logout'] = 'LOGOUT'.$this->sessionManager->getLoggedInUsername();
+            $this->menu['logout'] = 'LOGOUT '.$this->sessionManager->getLoggedInUsername();
         } else {
             $this->menu['register'] = 'REGISTER';
             $this->menu['login'] = 'LOGIN';

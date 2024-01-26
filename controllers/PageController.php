@@ -21,31 +21,38 @@ class PageController {
     private function processRequest() {
         switch($this->model->page) {
             case 'contact':
+                require_once('models/UserModel.php');
+                $this->model = new UserModel($this->model);
                 $data = $this->model->validateContact();
                 break;
             case 'login':
-                $data = $this->model->validateLogin();
-                if ($data['valid'] && !empty($data['connectionErr'])) {
-                    loginUser($data['name'], $data['userId']);
+                require_once('models/UserModel.php');
+                $this->model = new UserModel($this->model);
+                $this->model->validateLogin();
+                if ($this->model->valid && empty($this->model->connectionErr)) {
+                    $this->model->loginUser($this->model->name, $this->model->getUserId());
                     $this->model->page = 'home';
                 }
                 break;
             case 'logout':
-                logoutUser();
+                require_once('models/UserModel.php');
+                $this->model = new UserModel($this->model);
+                $this->model->logoutUser();
                 $this->model->page = 'home';
                 break;
             case 'register':
-                require_once('register.php');
+                require_once('models/UserModel.php');
+                $this->model = new UserModel($this->model);
                 try {
-                    $data = $this->model->validateRegistration();
-                    if ($data['valid']) {
-                        $this->model->addUser($data);
-                        $data['pass'] = ''; //remove pass, else it will be pre-filled
+                    $this->model->validateRegistration();
+                    if ($this->model->valid) {
+                        $this->model->addUser($this->model->email, $this->model->name, $this->model->pass);
+                        $this->model->pass = ''; //remove pass, else it will be pre-filled
                         $this->model->page = 'login';
                     }
                 }
                 catch (Exception $ex) {
-                    $data['connectionErr'] = "Er is een technische storing opgetreden, registratie is niet mogelijk. Probeer het later opnieuw.";
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, registratie is niet mogelijk. Probeer het later opnieuw.";
 
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
@@ -67,8 +74,8 @@ class PageController {
                 $view = new AboutDoc($this->model);
                 break;
             case 'contact':
-                require_once('views/HomeDoc.php');
-                $view = new HomeDoc($this->model);
+                require_once('views/ContactDoc.php');
+                $view = new ContactDoc($this->model);
                 break;
             case 'register':
                 require_once('views/RegisterDoc.php');
