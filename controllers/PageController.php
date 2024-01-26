@@ -57,7 +57,58 @@ class PageController {
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
                 break;
-            //... detail, webshop, etc
+            case 'detail':
+                try {
+                    require_once('models/ShopModel.php');
+                    $this->model = new ShopModel($this->model);
+                    $this->model->handleCartActions();
+                    $this->model->products = $this->model->getProducts([Util::getUrlVar('productId')]);
+                }
+                catch (Exception $ex) {
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+
+                    LogError("Authentication Failed: ".$ex->getMessage());
+                }
+                break;
+            case 'webshop':
+                try {
+                    require_once('models/ShopModel.php');
+                    $this->model = new ShopModel($this->model);
+                    $this->model->handleCartActions();
+                    $this->model->products = $this->model->getAllProducts();
+                }
+                catch (Exception $ex) {
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+
+                    LogError("Authentication Failed: ".$ex->getMessage());
+                }
+                break;
+            case 'cart':
+                try {
+                    require_once('models/ShopModel.php');
+                    $this->model = new ShopModel($this->model);
+                    $this->model->handleCartActions();
+                    $this->model->cartItems = $this->model->getCartItems();
+                }
+                catch (Exception $ex) {
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+
+                    LogError("Authentication Failed: ".$ex->getMessage());
+                }
+                break;
+            case 'topfive':
+                try {
+                    require_once('models/ShopModel.php');
+                    $this->model = new ShopModel($this->model);
+                    $this->model->handleCartActions();
+                    $this->model->products = $this->model->getTopFiveProducts();
+                }
+                catch (Exception $ex) {
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, er kon geen verbinding gemaakt worden met de database. Probeer het later opnieuw.";
+
+                    LogError("Authentication Failed: ".$ex->getMessage());
+                }
+                break;
         }
     }
 
@@ -84,6 +135,22 @@ class PageController {
             case 'login':
                 require_once('views/LoginDoc.php');
                 $view = new LoginDoc($this->model);
+                break;
+            case 'detail':
+                require_once('views/DetailDoc.php');
+                $view = new DetailDoc($this->model);
+                break;
+            case 'webshop':
+                require_once('views/WebshopDoc.php');
+                $view = new WebshopDoc($this->model);
+                break;
+            case 'cart':
+                require_once('views/CartDoc.php');
+                $view = new CartDoc($this->model);
+                break;
+            case 'topfive':
+                require_once('views/TopFiveDoc.php');
+                $view = new TopFiveDoc($this->model);
                 break;
         }
 
