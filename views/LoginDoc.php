@@ -8,24 +8,24 @@ class LoginDoc extends FormDoc {
     }
 
     protected function showContent() {
-        if (!empty($this->data['connectionErr'])) {
-            echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;
+        if (!empty($this->model->connectionErr)) {
+            echo "<p>".$this->model->connectionErr."</p>".PHP_EOL;
         } else {
-            $this->displayLoginForm($this->data);
+            $this->displayLoginForm();
         }
     }
 
-    private function displayLoginForm($data) {
+    private function displayLoginForm() {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
         
         $this->showFormStart('login');
         
         //input for email
-        $this->showFormField('email', 'Email:', 'email', $data);
+        $this->showFormField('email', 'Email:', 'email', $this->model);
         
         //input for password
-        $this->showFormField('pass', 'Wachtwoord:', 'password', $data);
+        $this->showFormField('pass', 'Wachtwoord:', 'password', $this->model);
 
         echo '        <br><br>' . PHP_EOL;
 

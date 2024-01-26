@@ -8,27 +8,27 @@ class RegisterDoc extends FormDoc {
     }
 
     protected function showContent() {
-        if (isset($this->data['connectionErr'])) {
-            echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;
+        if (isset($this->model->connectionErr)) {
+            echo "<p>".$this->model->connectionErr."</p>".PHP_EOL;
         } else {
-            $this->displayRegistrationForm($this->data);
+            $this->displayRegistrationForm();
         }
     }
 
-    private function displayRegistrationForm($data) {
+    private function displayRegistrationForm() {
         
         echo '<h4>Vul uw gegevens in om te registreren</h4>' . PHP_EOL;
         
         $this->showFormStart('register');
         
         //input for name
-        $this->showFormField('name', 'Naam:', 'text', $data);
+        $this->showFormField('name', 'Naam:', 'text', $this->model);
         //input for email
-        $this->showFormField('email', 'Email:', 'email', $data);
+        $this->showFormField('email', 'Email:', 'email', $this->model);
         
         //input for password
-        $this->showFormField('pass', 'Wachtwoord:', 'password', $data);
-        $this->showFormField('passConfirm', 'Wachtwoord Herhalen:', 'password', $data);
+        $this->showFormField('pass', 'Wachtwoord:', 'password', $this->model);
+        $this->showFormField('passConfirm', 'Wachtwoord Herhalen:', 'password', $this->model);
 
         echo '        <br><br>' . PHP_EOL;
 

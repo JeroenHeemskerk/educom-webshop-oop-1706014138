@@ -13,21 +13,21 @@ abstract class FormDoc extends BasicDoc {
     }
 
     //function to display a text input as well as its label and error message
-    protected function showFormField($id, $label, $type, $data, $options=NULL, $placeholder=NULL) {
+    protected function showFormField($id, $label, $type, $model, $options=NULL, $placeholder=NULL) {
         switch ($type) {
             case 'text':
             case 'password':
             case 'email':
-                $this->inputField($id, $label, $type, $data);
+                $this->inputField($id, $label, $type, $model);
                 break;
             case 'radio':
-                $this->radioField($id, $label, $type, $data, $options);
+                $this->radioField($id, $label, $type, $model, $options);
                 break;
             case 'select':
-                $this->selectField($id, $label, $type, $data, $options);
+                $this->selectField($id, $label, $type, $model, $options);
                 break;
             case 'textarea':
-                $this->textAreaField($id, $label, $type, $data, $options, $placeholder);
+                $this->textAreaField($id, $label, $type, $model, $options, $placeholder);
                 break;
             default:
                 //error
@@ -35,50 +35,50 @@ abstract class FormDoc extends BasicDoc {
         }
     }
     
-    private function inputField($id, $label, $type, $data) {
+    private function inputField($id, $label, $type, $model) {
         echo '        <div class="inputfield">
             <label for="' . $id . '">' . $label . '</label>
-            <input type="' . $type . '" value="' . $data[$id] . '" id="' . $id . '" name="' . $id . '">
-            <span class="error">' . $data[$id.'Err'] . '</span><br>
+            <input type="' . $type . '" value="' . $model->$id . '" id="' . $id . '" name="' . $id . '">
+            <span class="error">' . $model->{$id.'Err'} . '</span><br>
         </div>' . PHP_EOL;
     }
     
-    private function selectField($id, $label, $type, $data, $options) {
+    private function selectField($id, $label, $type, $model, $options) {
         echo '        <div class="'. $id .'">
             <label for="'. $id .'">'.$label.'</label>
             <select name="'. $id .'" id="'. $id .'">' . PHP_EOL;
 
-        echo '            <option value="" disabled ' . ($data[$id] == '' ? 'selected="true"' : '');
+        echo '            <option value="" disabled ' . ($model->$id == '' ? 'selected="true"' : '');
         echo '>Selecteer een optie</option>' . PHP_EOL;
         
         foreach ($options as $option => $optionLabel) {
-            echo '<option value="'.$optionLabel.'" ' . ($data[$id] == $optionLabel ? 'selected="true"' : '');
+            echo '<option value="'.$optionLabel.'" ' . ($model->$id == $optionLabel ? 'selected="true"' : '');
             echo '>'.$optionLabel.'</option>';
         }
 
         echo '        </select>
-            <span class="error">' . $data[$id.'Err'] . '</span>
+            <span class="error">' . $model->{$id.'Err'} . '</span>
         </div><br>' . PHP_EOL;
     }
     
-    private function radioField($id, $label, $type, $data, $options) {
+    private function radioField($id, $label, $type, $model, $options) {
         echo '        <label for="'.$id.'">'.$label.'</label>
-        <span class="error">' . $data[$id.'Err'] . '</span><br>'.PHP_EOL;
+        <span class="error">' . $model->{$id.'Err'} . '</span><br>'.PHP_EOL;
         
         foreach($options as $option => $optionLabel) {
-            echo '<input type="radio" id="'.$option.'Option'.'" name="'.$id.'" value="'.$option.'" ' . ($data[$id] == $option ? "checked" : ''); 
+            echo '<input type="radio" id="'.$option.'Option'.'" name="'.$id.'" value="'.$option.'" ' . ($model->$id == $option ? "checked" : ''); 
             echo '>
         <label for="'.$option.'Option'.'">'.$optionLabel.'</label><br>'.PHP_EOL;
         }
     }
     
-    private function textAreaField($id, $label, $type, $data, $options, $placeholder) {
-        echo '        <label for="'.$id.'">'.$label.'</label> <span class="error">' . $data[$id.'Err'] . '</span><br>
+    private function textAreaField($id, $label, $type, $model, $options, $placeholder) {
+        echo '        <label for="'.$id.'">'.$label.'</label> <span class="error">' . $model->{$id.'Err'} . '</span><br>
         <textarea name="'.$id.'" placeholder="'.$placeholder.'"';
         foreach($options as $key => $value){
             echo ' '.$key.'="'.$value.'"';
         }
-        echo '>' . $data[$id] . '</textarea><br>
+        echo '>' . $model->$id . '</textarea><br>
         <br>';
     }
     
