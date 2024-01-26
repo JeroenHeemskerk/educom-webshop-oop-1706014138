@@ -8,17 +8,15 @@ class CartDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        if (isset($this->data['connectionErr'])) {
-            echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;
+        if (!empty($this->model->connectionErr)) {
+            echo "<p>".$this->model->connectionErr."</p>".PHP_EOL;
         } else {
-            $cartItems = $this->data['cartItems'];
-
-            $productIds = array_keys($cartItems);
+            $productIds = array_keys($this->model->cartItems);
             if (empty($productIds)) {
                 echo "<br><h3 class='centered'>Uw winkelwagen is leeg, voeg iets toe op de webshop</h3>";
             } else {
                 try {
-                    $products = getProducts($productIds);
+                    $products = $this->model->getProducts($productIds);
                     $totalPrice = 0;
     
                     echo '<table>' . PHP_EOL;
@@ -37,10 +35,10 @@ class CartDoc extends ProductDoc {
                         
                         //show quantity and buttons to change values
                         echo '    <td>';
-                        $this->showCartForm($product['id'], $cartItems[$product['id']]);
+                        $this->showCartForm($product['id'], $this->model->cartItems[$product['id']]);
                         echo '    </td>' . PHP_EOL;
     
-                        $price = $product['price']*$cartItems[$product['id']];
+                        $price = $product['price']*$this->model->cartItems[$product['id']];
                         $totalPrice += $price;
                         echo "    <td>$".number_format($price, 2)."</td>" . PHP_EOL;
                         echo "    <td><img class='webshop_img' src='Images/".$product['img_filename']."'></td>" . PHP_EOL;
@@ -62,8 +60,8 @@ class CartDoc extends ProductDoc {
                     echo '</table>'. PHP_EOL;
                 }
                 catch (Exception $ex) {
-                    $genericErr = "Er is een technische storing opgetreden, registratie is niet mogelijk. Probeer het later opnieuw.";
-                    echo "<p>$genericErr</p>".PHP_EOL;
+                    $this->model->connectionErr = "Er is een technische storing opgetreden, er kan geen verbinding met de database gemaakt worden. Probeer het later opnieuw.";
+                    echo "<p>".$this->model->connectionErr."</p>".PHP_EOL;
                     LogError("Authentication Failed: ".$ex->getMessage());
                 }
             }

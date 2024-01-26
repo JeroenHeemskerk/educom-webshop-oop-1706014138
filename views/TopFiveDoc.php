@@ -8,10 +8,10 @@ class TopFiveDoc extends ProductDoc {
     }
 
     protected function showContent() {
-        if (isset($this->data['connectionErr'])) {
-            echo "<p>".$this->data['connectionErr']."</p>".PHP_EOL;
+        if (!empty($this->model->connectionErr)) {
+            echo "<p>".$this->model->connectionErr."</p>".PHP_EOL;
         } else {
-            $this->showProductList($this->data['products']);
+            $this->showProductList($this->model->products, 'topfive');
         }
     }
 }
