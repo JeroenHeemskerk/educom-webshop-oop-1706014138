@@ -1,11 +1,12 @@
 <?php
 
 class PageController {
+    private $modelFactory;
     private $model;
 
-    public function __construct() {
-        require_once('models/PageModel.php');
-        $this->model = new PageModel(NULL);
+    public function __construct($modelFactory) {
+        $this->modelFactory = $modelFactory;
+        $this->model = $this->modelFactory->createModel('page');
     }
 
     public function handleRequest() {
@@ -21,34 +22,35 @@ class PageController {
     private function processRequest() {
         switch($this->model->page) {
             case 'contact':
-                require_once('models/UserModel.php');
-                $this->model = new UserModel($this->model);
-                $data = $this->model->validateContact();
+                $this->model = $this->modelFactory->createModel('user');
+                $this->model->page = 'contact';
+                $this->model->validateContact();
                 break;
             case 'login':
-                require_once('models/UserModel.php');
-                $this->model = new UserModel($this->model);
+                $this->model = $this->modelFactory->createModel('user');
                 $this->model->validateLogin();
                 if ($this->model->valid && empty($this->model->connectionErr)) {
                     $this->model->loginUser($this->model->name, $this->model->getUserId());
                     $this->model->page = 'home';
+                } else {
+                    $this->model->page = 'login';
                 }
                 break;
             case 'logout':
-                require_once('models/UserModel.php');
-                $this->model = new UserModel($this->model);
+                $this->model = $this->modelFactory->createModel('user');
                 $this->model->logoutUser();
                 $this->model->page = 'home';
                 break;
             case 'register':
-                require_once('models/UserModel.php');
-                $this->model = new UserModel($this->model);
+                $this->model = $this->modelFactory->createModel('user');
                 try {
                     $this->model->validateRegistration();
                     if ($this->model->valid) {
                         $this->model->addUser($this->model->email, $this->model->name, $this->model->pass);
                         $this->model->pass = ''; //remove pass, else it will be pre-filled
                         $this->model->page = 'login';
+                    } else {
+                        $this->model->page = 'register';
                     }
                 }
                 catch (Exception $ex) {
