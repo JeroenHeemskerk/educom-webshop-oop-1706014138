@@ -40,7 +40,7 @@ class Crud {
         }
         $stmt->setFetchMode(PDO::FETCH_OBJ);
         $stmt->execute();
-        $results = $stmt->fetch_all();
+        $results = $stmt->fetchAll();
         return $results;
     }
 
