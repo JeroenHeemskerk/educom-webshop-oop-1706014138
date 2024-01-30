@@ -8,6 +8,7 @@ class ModelFactory {
     }
 
     public function createModel($type) {
+        $model = NULL;
         switch ($type) {
             case 'page':
                 require_once('models/PageModel.php');
@@ -15,13 +16,15 @@ class ModelFactory {
                 break;
             case 'user':
                 require_once('models/UserModel.php');
-                $model = new UserModel(NULL);
+                $crud = $this->crudFactory->createCrud('user');
+                $model = new UserModel(NULL, $crud);
                 break;
             case 'shop':
                 require_once('models/ShopModel.php');
                 $model = new ShopModel(NULL);
                 break;
         }
+        return $model;
     }
 }
 

@@ -8,18 +8,18 @@ class CrudFactory {
     }
 
     public function createCrud($type) {
+        $crud = NULL;
         switch ($type) {
             case 'user':
                 require_once('UserCrud.php');
-                $userCrud = new UserCrud($this->crud);
-                return $userCrud;
+                $crud = new UserCrud($this->crud);
                 break;
             case 'shop':
                 require_once('ShopCrud.php');
-                $ShopCrud = new ShopCrud($this->crud);
-                return $ShopCrud;
+                $crud = new ShopCrud($this->crud);
                 break;
         }
+        return $crud;
     }
 }
 
