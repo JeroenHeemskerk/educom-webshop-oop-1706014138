@@ -40,11 +40,16 @@ class UserModel extends PageModel {
     public $postcodeErr = '';
     public $cityErr = '';
 
+    //validation variables
     private $userId = 0;
     public $valid = false;
 
-    public function __construct($pageModel) {
+    //CRUD
+    private $userCrud;
+
+    public function __construct($pageModel, $crud) {
         PARENT::__construct($pageModel);
+        $this->userCrud = $crud;
     }
 
     function validateContact() {
@@ -224,13 +229,11 @@ class UserModel extends PageModel {
     }
 
     function doesEmailExist($email) {
-        require_once('db_repository.php');
-        return !empty(getUserByEmail($email));
+        return !empty($this->userCrud->readUserByEmail($email));
     }
 
     public function authorizeUser($email, $pass) {
-        require_once('db_repository.php');
-        $user = getUserByEmail($email);
+        $user = $this->userCrud->readUserByEmail($email);
         
         if ($user == NULL) {
             $userData['user'] = NULL;
@@ -248,9 +251,8 @@ class UserModel extends PageModel {
     }
 
     public function addUser($email, $name, $pass) {
-        require_once('db_repository.php');
         $encrypted_password = password_hash($pass, PASSWORD_BCRYPT, ['cost'=>14]);
-        storeUser($email, $name, $encrypted_password);
+        $this->userCrud->createUser($email, $name, $encrypted_password);
     }
 
     public function loginUser() {
