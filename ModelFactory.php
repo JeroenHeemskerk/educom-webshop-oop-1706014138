@@ -21,7 +21,8 @@ class ModelFactory {
                 break;
             case 'shop':
                 require_once('models/ShopModel.php');
-                $model = new ShopModel(NULL);
+                $crud = $this->crudFactory->createCrud('shop');
+                $model = new ShopModel(NULL, $crud);
                 break;
         }
         return $model;
