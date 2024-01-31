@@ -7,11 +7,14 @@ class UserCrud {
         $this->crud = $crud;
     }
 
-    public function createUser($user) {
+    public function createUser($email, $name, $password) {
         $sql = 'INSERT INTO users (email, name, password)
         VALUES (:email, :name, :password)';
 
-        $params = array(); //user to be added
+        $params = array();
+        $params[':email'] = $email;
+        $params[':name'] = $name;
+        $params[':password'] = $password;
         return $this->crud->createRow($sql, $params);
     }
 
@@ -21,11 +24,15 @@ class UserCrud {
         return $this->crud->readOneRow($sql, $params);
     }
 
-    public function updateUser($user) {
+    public function updateUser($email, $name, $password) {
         $sql = 'UPDATE users
                 SET email = :email, name = :name, password = :password
                 WHERE id = :id';
-        $params = array(); //user to be added
+
+        $params = array();
+        $params[':email'] = $email;
+        $params[':name'] = $name;
+        $params[':password'] = $password;
         return $this->crud->updateRow($sql, $params);
     }
 
