@@ -26,16 +26,24 @@ class ShopCrud {
 
         //SQL query for adding order items
         $sql = "INSERT INTO order_items (order_id, product_id, quantity, sale_price)
-                VALUES (:order_id, :product_id, :quantity, :sale_price)";
+                VALUES ";
+
         //call createRow for each item
+        $params = array();
         for($i=0; $i<count($products);$i++) {
+            $ending = $i==count($products)-1 ? ';' : ',';
+            $sql = $sql."(:order_id_$i, :product_id_$i, :quantity_$i, :sale_price_$i)$ending";
+
             $quantity = $cartItems[$products[$i]->id];
             $salePrice = $quantity * $products[$i]->price;
-            $params = array(':order_id'=>$orderId, ':product_id'=>$products[$i]->id,
-                            ':quantity'=>$quantity, ':sale_price'=>$salePrice);
 
-            $this->crud->createRow($sql, $params);
+            $params[":order_id_$i"] = $orderId;
+            $params[":product_id_$i"] = $products[$i]->id;
+            $params[":quantity_$i"] = $quantity;
+            $params[":sale_price_$i"] = $salePrice;
         }
+        $this->crud->createRow($sql, $params);
+
         return true;
     }
 
