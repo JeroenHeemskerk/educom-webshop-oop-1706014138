@@ -61,8 +61,8 @@ class PageController {
                 break;
             case 'detail':
                 try {
-                    require_once('models/ShopModel.php');
-                    $this->model = new ShopModel($this->model);
+                    $this->model = $this->modelFactory->createModel('shop');
+                    $this->model->page = 'detail';
                     $this->model->handleCartActions();
                     $this->model->products = $this->model->getProducts([Util::getUrlVar('productId')]);
                 }
@@ -74,8 +74,8 @@ class PageController {
                 break;
             case 'webshop':
                 try {
-                    require_once('models/ShopModel.php');
-                    $this->model = new ShopModel($this->model);
+                    $this->model = $this->modelFactory->createModel('shop');
+                    $this->model->page = 'webshop';
                     $this->model->handleCartActions();
                     $this->model->products = $this->model->getAllProducts();
                 }
@@ -87,8 +87,8 @@ class PageController {
                 break;
             case 'cart':
                 try {
-                    require_once('models/ShopModel.php');
-                    $this->model = new ShopModel($this->model);
+                    $this->model = $this->modelFactory->createModel('shop');
+                    $this->model->page = 'cart';
                     $this->model->handleCartActions();
                     $this->model->cartItems = $this->model->getCartItems();
                 }
@@ -100,8 +100,8 @@ class PageController {
                 break;
             case 'topfive':
                 try {
-                    require_once('models/ShopModel.php');
-                    $this->model = new ShopModel($this->model);
+                    $this->model = $this->modelFactory->createModel('shop');
+                    $this->model->page = 'topfive';
                     $this->model->handleCartActions();
                     $this->model->products = $this->model->getTopFiveProducts();
                 }
