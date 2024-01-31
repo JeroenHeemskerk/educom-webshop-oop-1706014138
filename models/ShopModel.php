@@ -6,8 +6,11 @@ class ShopModel extends PageModel {
     public $cartItems = array();
     public $products = array();
 
-    public function __construct($pageModel) {
+    private $shopCrud;
+
+    public function __construct($pageModel, $crud) {
         PARENT::__construct($pageModel);
+        $this->shopCrud = $crud;
     }
 
     public function getLoggedInUserId() {
@@ -55,25 +58,20 @@ class ShopModel extends PageModel {
     }
 
     public function getProducts($ids) {
-        require_once('db_repository.php');
-        return getProductsByID($ids);
+        return $this->shopCrud->readProductsByID($ids);
     }
 
     public function getAllProducts() {
-        require_once('db_repository.php');
-        return getAllProducts();
+        return $this->shopCrud->readAllProducts();
     }
 
     public function getTopFiveProducts() {
-        require_once('db_repository.php');
-        return getTopFive();
+        return $this->shopCrud->readTopFiveProducts();
     }
 
     public function placeOrder($userId, $cartItems) {
-        require_once('db_repository.php');
-        createOrder($userId, $cartItems);
+        $this->shopCrud->createOrder($userId, $cartItems);
     }
-
 }
 
 ?>
