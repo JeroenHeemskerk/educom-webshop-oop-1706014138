@@ -29,9 +29,9 @@ class ShopCrud {
                 VALUES (:order_id, :product_id, :quantity, :sale_price)";
         //call createRow for each item
         for($i=0; $i<count($products);$i++) {
-            $quantity = $cartItems[$products[$i]['id']];
-            $salePrice = $quantity * $products[$i]['price'];
-            $params = array(':order_id'=>$orderId, ':product_id'=>$products[$i]['id'],
+            $quantity = $cartItems[$products[$i]->id];
+            $salePrice = $quantity * $products[$i]->price;
+            $params = array(':order_id'=>$orderId, ':product_id'=>$products[$i]->id,
                             ':quantity'=>$quantity, ':sale_price'=>$salePrice);
 
             $this->crud->createRow($sql, $params);
