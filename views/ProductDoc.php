@@ -16,15 +16,15 @@ abstract class ProductDoc extends FormDoc {
         echo '</tr>' . PHP_EOL;
         foreach ($products as $product) {
             echo '<tr>' . PHP_EOL;
-            echo "    <td>".$product['id']."</td>" . PHP_EOL;
-            echo "    <td><a class='webshop_link' href='index.php?page=detail&productId=".$product['id']."'>".$product['name']."</a></td>" . PHP_EOL;
+            echo "    <td>".$product->id."</td>" . PHP_EOL;
+            echo "    <td><a class='webshop_link' href='index.php?page=detail&productId=".$product->id."'>".$product->name."</a></td>" . PHP_EOL;
             if ($this->model->isUserLoggedIn()) {
                 echo '    <td>';
-                $this->showAddToCartForm($page, $product['id']);
+                $this->showAddToCartForm($page, $product->id);
                 echo '    </td>' . PHP_EOL;
             }
-            echo "    <td>$".$product['price']."</td>" . PHP_EOL;
-            echo "    <td><img class='webshop_img' src='Images/".$product['img_filename']."'></td>" . PHP_EOL;
+            echo "    <td>$".$product->price."</td>" . PHP_EOL;
+            echo "    <td><img class='webshop_img' src='Images/".$product->img_filename."'></td>" . PHP_EOL;
             echo '</tr>' . PHP_EOL;
         }
         echo '</table>'. PHP_EOL;
