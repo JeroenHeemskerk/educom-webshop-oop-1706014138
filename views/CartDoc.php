@@ -30,18 +30,18 @@ class CartDoc extends ProductDoc {
     
                     foreach ($products as $product) {
                         echo '<tr>' . PHP_EOL;
-                        echo "    <td>".$product['id']."</td>" . PHP_EOL;
-                        echo "    <td><a class='webshop_link' href='index.php?page=detail&productId=".$product['id']."'>".$product['name']."</a></td>" . PHP_EOL;
+                        echo "    <td>".$product->id."</td>" . PHP_EOL;
+                        echo "    <td><a class='webshop_link' href='index.php?page=detail&productId=".$product->id."'>".$product->name."</a></td>" . PHP_EOL;
                         
                         //show quantity and buttons to change values
                         echo '    <td>';
-                        $this->showCartForm($product['id'], $this->model->cartItems[$product['id']]);
+                        $this->showCartForm($product->id, $this->model->cartItems[$product->id]);
                         echo '    </td>' . PHP_EOL;
     
-                        $price = $product['price']*$this->model->cartItems[$product['id']];
+                        $price = $product->price*$this->model->cartItems[$product->id];
                         $totalPrice += $price;
                         echo "    <td>$".number_format($price, 2)."</td>" . PHP_EOL;
-                        echo "    <td><img class='webshop_img' src='Images/".$product['img_filename']."'></td>" . PHP_EOL;
+                        echo "    <td><img class='webshop_img' src='Images/".$product->img_filename."'></td>" . PHP_EOL;
                         echo '</tr>' . PHP_EOL;
                     }
     

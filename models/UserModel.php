@@ -150,8 +150,8 @@ class UserModel extends PageModel {
                             $this->passErr = "Ongeldig wachtwoord";
                             break;
                         case RESULT_OK:
-                            $this->name = $userData['user']['name'];
-                            $this->userId = $userData['user']['id'];
+                            $this->name = $userData['user']->name;
+                            $this->userId = $userData['user']->id;
                             break;
                     }
                 }
@@ -240,7 +240,7 @@ class UserModel extends PageModel {
             $userData['result'] = RESULT_UNKNOWN_USER;
             return $userData;
         }
-        if (!password_verify($pass, $user['password'])) {
+        if (!password_verify($pass, $user->password)) {
             $userData['user'] = NULL;
             $userData['result'] = RESULT_INCORRECT_PASSWORD;
             return $userData;
