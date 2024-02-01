@@ -9,7 +9,7 @@ class UserCrud {
 
     public function createUser($email, $name, $password) {
         $sql = 'INSERT INTO users (email, name, password)
-        VALUES (:email, :name, :password)';
+                VALUES (:email, :name, :password)';
 
         $params = array();
         $params[':email'] = $email;
@@ -19,7 +19,10 @@ class UserCrud {
     }
 
     public function readUserByEmail($email) {
-        $sql = 'SELECT * FROM users WHERE email = :email';
+        $sql = 'SELECT *
+                FROM users
+                WHERE email = :email';
+
         $params = array(':email'=>$email);
         return $this->crud->readOneRow($sql, $params);
     }
@@ -37,7 +40,9 @@ class UserCrud {
     }
 
     public function deleteUser($id) {
-        $sql = 'DELETE FROM users WHERE id = :id';
+        $sql = 'DELETE FROM users
+                WHERE id = :id';
+
         $params = array(':id'=>$id);
         return $this->crud->deleteRow($sql, $params);
     }

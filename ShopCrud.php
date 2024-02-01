@@ -20,7 +20,9 @@ class ShopCrud {
             return false;
         }
 
-        $sql = "INSERT INTO orders (user_id) VALUES (:userId)";
+        $sql = "INSERT INTO orders (user_id)
+                VALUES (:userId)";
+
         $params = array(':userId'=>$userId);
         $orderId = $this->crud->createRow($sql, $params);
 
@@ -48,7 +50,9 @@ class ShopCrud {
     }
 
     public function readProductsById($ids) {
-        $sql = "SELECT * FROM products WHERE id IN (";
+        $sql = "SELECT * FROM products
+                WHERE id IN (";
+
         for($i=0; $i<count($ids);$i++) {
             $ending = $i==count($ids)-1 ? ')' : ',';
             $sql = $sql.":id_$i".$ending;
@@ -62,26 +66,26 @@ class ShopCrud {
     }
 
     public function readAllProducts() {
-        $sql = 'SELECT * FROM products';
+        $sql = 'SELECT *
+                FROM products';
         $params = [];
         return $this->crud->readMultipleRows($sql, $params);
     }
 
     public function readTopFiveProducts() {
-        $sql = 
-        'SELECT id, name, product_description, price, img_filename, quantity
-        FROM products x
-        LEFT JOIN (SELECT product_id, SUM(quantity) quantity
-            FROM `orders` o
-            JOIN (
-                SELECT id, order_id, product_id, quantity
-                FROM order_items) oi
-            ON o.id = oi.order_id
-            WHERE date >= ADDDATE(NOW(), INTERVAL -7 DAY)
-            GROUP BY product_id) y
-        ON x.id = y.product_id
-        ORDER BY quantity DESC
-        LIMIT 5';
+        $sql = 'SELECT id, name, product_description, price, img_filename, quantity
+                FROM products x
+                LEFT JOIN (SELECT product_id, SUM(quantity) quantity
+                    FROM `orders` o
+                    JOIN (
+                        SELECT id, order_id, product_id, quantity
+                        FROM order_items) oi
+                    ON o.id = oi.order_id
+                    WHERE date >= ADDDATE(NOW(), INTERVAL -7 DAY)
+                    GROUP BY product_id) y
+                ON x.id = y.product_id
+                ORDER BY quantity DESC
+                LIMIT 5';
 
         $params = [];
 
