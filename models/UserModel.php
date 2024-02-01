@@ -136,10 +136,10 @@ class UserModel extends PageModel {
     public function validateLogin() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //check email
-            $this->email = $this->testInput(getPostVar("email"));
+            $this->email = $this->testInput(Util::getPostVar("email"));
             $this->emailErr = $this->validateEmail($this->email);
             if (empty($emailErr)) {
-                $this->pass = $this->testInput(getPostVar("pass"));
+                $this->pass = $this->testInput(Util::getPostVar("pass"));
                 try {
                     $userData = $this->authorizeUser($this->email, $this->pass);
                     switch($userData['result']) {
