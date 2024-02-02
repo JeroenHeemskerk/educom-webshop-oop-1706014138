@@ -18,6 +18,10 @@ class CrudFactory {
                 require_once('ShopCrud.php');
                 $crud = new ShopCrud($this->crud);
                 break;
+            case 'rating':
+                require_once('RatingCrud.php');
+                $crud = new RatingCrud($this->crud);
+                break;
         }
         return $crud;
     }

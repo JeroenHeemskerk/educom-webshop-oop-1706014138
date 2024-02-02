@@ -24,6 +24,11 @@ class ModelFactory {
                 $crud = $this->crudFactory->createCrud('shop');
                 $model = new ShopModel(NULL, $crud);
                 break;
+            case 'rating':
+                require_once('models/RatingModel.php');
+                $crud = $this->crudFactory->createCrud('rating');
+                $model = new RatingModel($crud);
+                break;
         }
         return $model;
     }
