@@ -3,6 +3,8 @@
 class PageController {
     private $modelFactory;
     private $model;
+    private $isAjaxRequest = false;
+    private $AjaxInput;
 
     public function __construct($modelFactory) {
         $this->modelFactory = $modelFactory;
@@ -11,11 +13,21 @@ class PageController {
 
     public function handleRequest() {
         $this->getRequest();
-        $this->processRequest();
-        $this->showResponse();
+        if ($this->isAjaxRequest) {
+            require_once('controllers/AjaxController.php');
+            $ac = new AjaxController($this->modelFactory, $this->AjaxInput);
+            $ac->processRequest();
+        } else {
+            $this->processRequest();
+            $this->showResponse();
+        }
     }
 
     private function getRequest() {
+        $this->isAjaxRequest = $this->model->isAjaxRequest();
+        if ($this->isAjaxRequest) {
+            $this->AjaxInput = $this->model->getAjaxRequestInfo();
+        }
         $this->model->getRequestedPage();
     }
 

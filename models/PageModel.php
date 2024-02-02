@@ -22,6 +22,22 @@ class PageModel {
         }
     }
 
+    public function isAjaxRequest() {
+        $this->isPost = $_SERVER['REQUEST_METHOD'] == 'POST';
+        require_once('Util.php');
+        if ($this->isPost) {
+            return Util::getPostVar('action', '') == 'ajax';
+        }
+        return Util::getUrlVar('action', '') == 'ajax';
+    }
+
+    public function getAjaxRequestInfo() {
+        if ($this->isPost) {
+            return $_POST;
+        }
+        return $_GET;
+    }
+
     public function getRequestedPage() {
         $this->isPost = $_SERVER['REQUEST_METHOD'] == 'POST';
 
