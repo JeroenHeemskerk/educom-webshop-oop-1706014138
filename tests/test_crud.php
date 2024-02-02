@@ -1,10 +1,12 @@
 <?php
 
-require_once('Crud.php');
-require_once('ShopCrud.php');
+require_once('../Crud.php');
+require_once('../ShopCrud.php');
 $c = new Crud();
 $sc = new ShopCrud($c);
-$res = $sc->readProductsById(array(1,2,4));
+$res = $sc->readProductsById(array(19));
+
+var_dump($res);
 
 $params = array();
 foreach ($res as $product) {
