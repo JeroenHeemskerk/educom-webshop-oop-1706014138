@@ -1,12 +1,15 @@
 <?php
 
-class RatingModel {
+require_once('models/PageModel.php');
+
+class RatingModel extends PageModel {
     private $function;
     private $args;
 
     private $ratingCrud;
 
     public function __construct($crud) {
+        PARENT::__construct(NULL);
         $this->ratingCrud = $crud;
     }
 
@@ -28,6 +31,10 @@ class RatingModel {
 
     public function hasUserRatedProduct($userId, $productId) {
         return !empty($this->ratingCrud->readUserRating($userId, $productId));
+    }
+
+    public function getLoggedInUserId() {
+        return $this->sessionManager->getLoggedInUserId();
     }
 }
 

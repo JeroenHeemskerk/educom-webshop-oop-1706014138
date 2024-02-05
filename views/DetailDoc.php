@@ -13,7 +13,9 @@ class DetailDoc extends ProductDoc {
         } else {
             $product = $this->model->products[0];
 
-            echo "<h3>".$product->name."</h3>" . PHP_EOL;
+            echo "<h3 class='product-name'>".$product->name."</h3>" . PHP_EOL;
+            echo "<div class='star-container'></div>" . PHP_EOL;
+            echo "<div class='rating-error'></div>" . PHP_EOL;
             echo "<h4>Price: $".$product->price."</h4>" . PHP_EOL;
             $this->showAddToCartForm('detail', $product->id);
             echo "<p>".$product->product_description."</p>" . PHP_EOL;

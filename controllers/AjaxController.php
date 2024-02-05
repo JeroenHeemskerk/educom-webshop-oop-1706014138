@@ -35,13 +35,16 @@ class AjaxController {
                 $userId = $this->args['userId'];
                 $productId = $this->args['productId'];
                 $rating = $this->args['rating'];
-                if (empty($this->model->hasUserRatedProduct($userId, $productId))) {
+                if ($this->model->hasUserRatedProduct($userId, $productId)) {
                     $this->model->updateRating($userId, $productId, $rating);
                 } else {
                     $this->model->createRating($userId, $productId, $rating);
                 }
                 break;
-
+            case 'getUserId':
+                $userId = $this->model->getLoggedInUserId();
+                return array('userId'=>$userId);
+                break;
         }
     }
 }

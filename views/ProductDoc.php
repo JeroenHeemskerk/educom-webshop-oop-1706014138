@@ -3,9 +3,19 @@
 require_once('FormDoc.php');
 
 abstract class ProductDoc extends FormDoc {
+    protected function showHeadContent() {
+        echo '        <link rel="stylesheet" href="css/stylesheet.css">' . PHP_EOL;
+        echo '        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>' . PHP_EOL;
+        $this->showJS('rating.js');
+    }
+
+    public function showJS($filepath) {
+        echo '        <script src="'.$filepath.'"></script>' . PHP_EOL;
+    }
+
     protected function showProductList($products, $page) {
         echo '<table class="product-table">' . PHP_EOL;
-        echo '<tr>' . PHP_EOL;
+        echo '<thead><tr>' . PHP_EOL;
         echo '    <th>ID</th>' . PHP_EOL;
         echo '    <th>Name</th>' . PHP_EOL;
         if ($this->model->isUserLoggedIn()) {
@@ -13,7 +23,7 @@ abstract class ProductDoc extends FormDoc {
         }
         echo '    <th>Price</th>' . PHP_EOL;
         echo '    <th>Image</th>' . PHP_EOL;
-        echo '</tr>' . PHP_EOL;
+        echo '</tr></thead><tbody>' . PHP_EOL;
         foreach ($products as $product) {
             echo '<tr>' . PHP_EOL;
             echo "    <td>".$product->id."</td>" . PHP_EOL;
@@ -27,7 +37,7 @@ abstract class ProductDoc extends FormDoc {
             echo "    <td><img class='webshop_img' src='Images/".$product->img_filename."'></td>" . PHP_EOL;
             echo '</tr>' . PHP_EOL;
         }
-        echo '</table>'. PHP_EOL;
+        echo '</tbody></table>'. PHP_EOL;
     }
 
     //form used in webshop and detail pages for users to add items to cart
