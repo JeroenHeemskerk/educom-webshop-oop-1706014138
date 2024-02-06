@@ -30,14 +30,13 @@ function submitRating(newRating) {
                     productId: productId,
                     rating: newRating },
             success: function() {
-                updateRating(productId);
+                getRating(productId);
             }
         });
     }
 }
-    
 
-function updateRating(productId) {
+function getRating(productId) {
     $.ajax({
         url: "index.php?action=ajax&function=getRating&productId="+productId,
         method: "GET",
@@ -84,7 +83,7 @@ function showStarRatings() {
             break;
         case 'detail':
             let productId = searchParams.get('productId');
-            updateRating(productId);
+            getRating(productId);
             addStarsToPage();
             break;
     }
