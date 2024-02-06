@@ -13,31 +13,37 @@ $(document).ready(function() {
 
 
 
-function submitRating(newRating) {
+// ============================ FUNCTIONS ============================
+
+async function submitRating(newRating) {
     let userId = getUserId();
-    if (userId == null) {
-        $(".rating-error").text('U moet inloggen om een beoordeling te delen.');
-        //add error message telling people to login
-    } else {
-        let searchParams = new URLSearchParams(window.location.search);
-        let productId = searchParams.get('productId');
-        $.ajax({
-            url: "index.php",
-            method: "POST",
-            data: { action: 'ajax',
-                    function: 'sendRating',
-                    userId: userId,
-                    productId: productId,
-                    rating: newRating },
-            success: function() {
-                getRating(productId);
-            }
-        });
-    }
+    getUserId().then((result) => {
+        let obj = JSON.parse(result);
+        userId = obj.userId;
+        if (userId == null) {
+            $(".rating-error").text('U moet inloggen om een beoordeling te delen.');
+            //add error message telling people to login
+        } else {
+            let searchParams = new URLSearchParams(window.location.search);
+            let productId = searchParams.get('productId');
+            $.ajax({
+                url: "index.php",
+                method: "POST",
+                data: { action: 'ajax',
+                        function: 'sendRating',
+                        userId: userId,
+                        productId: productId,
+                        rating: newRating },
+                success: function() {
+                    getRating(productId);
+                }
+            });
+        }
+    });
 }
 
 function getRating(productId) {
-    $.ajax({
+    return $.ajax({
         url: "index.php?action=ajax&function=getRating&productId="+productId,
         method: "GET",
         success: function(result) {
@@ -49,14 +55,9 @@ function getRating(productId) {
 }
 
 function getUserId() {
-    $.ajax({
+    return $.ajax({
         url: "index.php?action=ajax&function=getUserId",
-        method: "GET",
-        success: function(result) {
-            console.log(result);
-            let obj = JSON.parse(result);
-            return parseInt(obj.userId);
-        }
+        method: "GET"
     });
 }
 
@@ -83,8 +84,7 @@ function showStarRatings() {
             break;
         case 'detail':
             let productId = searchParams.get('productId');
-            getRating(productId);
-            addStarsToPage();
+            getRating(productId).then(addStarsToPage);
             break;
     }
 }
