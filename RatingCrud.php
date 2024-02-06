@@ -42,7 +42,7 @@ class RatingCrud {
                 GROUP BY product_id';
 
         $params = array();
-        return $this->crud->readOneRow($sql, $params);
+        return $this->crud->readMultipleRows($sql, $params);
     }
 
     public function updateRating($userId, $productId, $rating) {
