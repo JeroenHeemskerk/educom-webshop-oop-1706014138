@@ -84,27 +84,18 @@ function showStarRatings() {
             break;
         case 'detail':
             let productId = searchParams.get('productId');
-            showDetailStarRating(productId);
+            updateRating(productId);
+            addStarsToPage();
             break;
     }
 }
 
-function showDetailStarRating(productId) {
-    $.ajax({
-        url: "index.php?action=ajax&function=getRating&productId="+productId,
-        method: "GET",
-        success: function(result) {
-            console.log(result);
-            let obj = JSON.parse(result);
-            rating = parseInt(obj.avg_rating);
-            for (let i = 1; i <= MAXRATING; i++) {
-                if (i <= rating) {
-                    $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">★</div>');
-                } else {
-                    $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">☆</div>');
-                }
-            }
+function addStarsToPage() {
+    for (let i = 1; i <= MAXRATING; i++) {
+        if (i <= rating) {
+            $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">★</div>');
+        } else {
+            $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">☆</div>');
         }
-    });
-    //★☆
+    }
 }
