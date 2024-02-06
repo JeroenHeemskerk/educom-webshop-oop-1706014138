@@ -88,6 +88,7 @@ function showStarRatings() {
 
     switch (page) {
         case 'webshop':
+        case 'topfive':
             getAllRatings().then((result)=>{
                 let obj = JSON.parse(result);
                 addStarsToWebshopPage(obj);

@@ -4,7 +4,7 @@ require_once('BasicDoc.php');
 
 abstract class FormDoc extends BasicDoc {
     protected function showFormStart($value) {
-        echo '    <form method="post" action="index.php" accept-charset=utf-8>';
+        echo '    <form method="post" action="index.php?page='.$value.'" accept-charset=utf-8>';
         $this->showHiddenField('page', $value);
     }
 
