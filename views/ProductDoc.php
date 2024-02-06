@@ -23,6 +23,7 @@ abstract class ProductDoc extends FormDoc {
         }
         echo '    <th>Price</th>' . PHP_EOL;
         echo '    <th>Image</th>' . PHP_EOL;
+        echo '    <th>Rating</th>' . PHP_EOL;
         echo '</tr></thead><tbody>' . PHP_EOL;
         foreach ($products as $product) {
             echo '<tr>' . PHP_EOL;
@@ -35,6 +36,7 @@ abstract class ProductDoc extends FormDoc {
             }
             echo "    <td>$".$product->price."</td>" . PHP_EOL;
             echo "    <td><img class='webshop_img' src='Images/".$product->img_filename."'></td>" . PHP_EOL;
+            echo "    <td><div class='star-container' id='".$product->id."'></div><div class='rating-error'></div></td>" . PHP_EOL;
             echo '</tr>' . PHP_EOL;
         }
         echo '</tbody></table>'. PHP_EOL;
