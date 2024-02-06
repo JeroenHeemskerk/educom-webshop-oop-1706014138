@@ -9,7 +9,7 @@ $(document).ready(function() {
         resetStars($(this).parent().attr('id'));
     });
     $(".star-container").on('click', '.star', function () {
-        submitRating($(this).attr('data-value'));
+        submitRating($(this).parent().attr('id'), $(this).attr('data-value'));
     });
 });
 
@@ -17,7 +17,7 @@ $(document).ready(function() {
 
 // ============================ FUNCTIONS ============================
 
-async function submitRating(newRating) {
+async function submitRating(productId, newRating) {
     let userId = getUserId();
     getUserId().then((result) => {
         let obj = JSON.parse(result);
@@ -26,8 +26,6 @@ async function submitRating(newRating) {
             $(".rating-error").text('U moet inloggen om een beoordeling te delen.');
             //add error message telling people to login
         } else {
-            let searchParams = new URLSearchParams(window.location.search);
-            let productId = searchParams.get('productId');
             $.ajax({
                 url: "index.php",
                 method: "POST",
@@ -49,10 +47,8 @@ function getRating(productId) {
         url: "index.php?action=ajax&function=getRating&productId="+productId,
         method: "GET",
         success: function(result) {
-            console.log(result);
             let obj = JSON.parse(result);
             ratings[productId.toString()] = parseInt(obj.avg_rating);
-            console.log(ratings);
         }
     });
 }
@@ -60,12 +56,7 @@ function getRating(productId) {
 function getAllRatings() {
     return $.ajax({
         url: "index.php?action=ajax&function=getAllRatings",
-        method: "GET",
-        success: function(result) {
-            console.log(result);
-            let obj = JSON.parse(result);
-            console.log(obj);
-        }
+        method: "GET"
     });
 }
 
@@ -77,7 +68,6 @@ function getUserId() {
 }
 
 function setStars(id, value) {
-    console.log(id);
     for (let i = 1; i <= MAXRATING; i++) {
         if (i <= value) {
             $('#prod_'+id+'_star_'+i).text('★');
@@ -125,11 +115,9 @@ function addStarsToProduct(id, rating) {
 
 function addStarsToWebshopPage(result) {
     result.forEach(item => {
-        console.log(item);
         let id = item.id;
         let rating = parseInt(item.avg_rating);
         ratings[id.toString()] = rating;
         addStarsToProduct(id, rating);
     });
-    console.log(ratings);
 }
