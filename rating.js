@@ -1,11 +1,13 @@
 const MAXRATING = 5;
-var rating;
+var ratings = Object();
 $(document).ready(function() {
     showStarRatings();
     $(".star-container").on('mouseenter', '.star', function () {
-        setStars($(this).attr('data-value'));
+        setStars($(this).parent().attr('id'), $(this).attr('data-value'));
     });
-    $(".star-container").on('mouseleave', '.star', resetStars);
+    $(".star-container").on('mouseleave', '.star', function () {
+        resetStars($(this).parent().attr('id'));
+    });
     $(".star-container").on('click', '.star', function () {
         submitRating($(this).attr('data-value'));
     });
@@ -49,7 +51,20 @@ function getRating(productId) {
         success: function(result) {
             console.log(result);
             let obj = JSON.parse(result);
-            rating = parseInt(obj.avg_rating);
+            ratings[productId.toString()] = parseInt(obj.avg_rating);
+            console.log(ratings);
+        }
+    });
+}
+
+function getAllRatings() {
+    return $.ajax({
+        url: "index.php?action=ajax&function=getAllRatings",
+        method: "GET",
+        success: function(result) {
+            console.log(result);
+            let obj = JSON.parse(result);
+            console.log(obj);
         }
     });
 }
@@ -61,18 +76,20 @@ function getUserId() {
     });
 }
 
-function setStars(value) {
+function setStars(id, value) {
+    console.log(id);
     for (let i = 1; i <= MAXRATING; i++) {
         if (i <= value) {
-            $('#star_'+i).text('★');
+            $('#prod_'+id+'_star_'+i).text('★');
         } else {
-            $('#star_'+i).text('☆');
+            $('#prod_'+id+'_star_'+i).text('☆');
         }
     }
 }
 
-function resetStars() {
-    setStars(rating);
+function resetStars(id) {
+    let rating = ratings[id.toString()];
+    setStars(id, rating);
 }
 
 function showStarRatings() {
@@ -81,20 +98,38 @@ function showStarRatings() {
 
     switch (page) {
         case 'webshop':
+            getAllRatings().then((result)=>{
+                let obj = JSON.parse(result);
+                addStarsToWebshopPage(obj);
+            });
             break;
         case 'detail':
-            let productId = searchParams.get('productId');
-            getRating(productId).then(addStarsToPage);
+            detailId = searchParams.get('productId');
+            getRating(detailId).then((result) => {
+                let obj = JSON.parse(result);
+                let rating = obj.avg_rating;
+                addStarsToProduct(detailId, rating);});
             break;
     }
 }
 
-function addStarsToPage() {
+function addStarsToProduct(id, rating) {
     for (let i = 1; i <= MAXRATING; i++) {
         if (i <= rating) {
-            $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">★</div>');
+            $('#'+id).append('<div class="star" data-value="'+i+'" id="prod_'+id+'_star_'+i+'">★</div>');
         } else {
-            $('.star-container').append('<div class="star" data-value="'+i+'" id="star_'+i+'">☆</div>');
+            $('#'+id).append('<div class="star" data-value="'+i+'" id="prod_'+id+'_star_'+i+'">☆</div>');
         }
     }
+}
+
+function addStarsToWebshopPage(result) {
+    result.forEach(item => {
+        console.log(item);
+        let id = item.product_id;
+        let rating = parseInt(item.avg_rating);
+        ratings[id.toString()] = rating;
+        addStarsToProduct(id, rating);
+    });
+    console.log(ratings);
 }
