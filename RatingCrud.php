@@ -37,9 +37,13 @@ class RatingCrud {
     }
 
     public function readAverageRatingForAllProducts() {
-        $sql = 'SELECT product_id, AVG(rating) avg_rating
-                FROM user_ratings
-                GROUP BY product_id';
+        $sql = 'SELECT id, IFNULL(avgs.avg_rating,0) as avg_rating
+                FROM products
+                LEFT JOIN (
+                    SELECT product_id, AVG(rating) avg_rating
+                    FROM user_ratings
+                    GROUP BY product_id) avgs
+                ON products.id = avgs.product_id';
 
         $params = array();
         return $this->crud->readMultipleRows($sql, $params);

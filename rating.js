@@ -126,7 +126,7 @@ function addStarsToProduct(id, rating) {
 function addStarsToWebshopPage(result) {
     result.forEach(item => {
         console.log(item);
-        let id = item.product_id;
+        let id = item.id;
         let rating = parseInt(item.avg_rating);
         ratings[id.toString()] = rating;
         addStarsToProduct(id, rating);
