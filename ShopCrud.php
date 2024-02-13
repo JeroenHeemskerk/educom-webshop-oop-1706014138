@@ -16,7 +16,7 @@ class ShopCrud {
         $products = $this->readProductsById($productIds);
     
         //if no products found in DB return false to indicate order creation unsuccessful
-        if ($products == NULL) {
+        if (empty($products)) {
             return false;
         }
 
@@ -51,16 +51,9 @@ class ShopCrud {
 
     public function readProductsById($ids) {
         $sql = "SELECT * FROM products
-                WHERE id IN (";
+                WHERE id IN (:ids)";
 
-        for($i=0; $i<count($ids);$i++) {
-            $ending = $i==count($ids)-1 ? ')' : ',';
-            $sql = $sql.":id_$i".$ending;
-        }
-        $params = array();
-        foreach($ids as $key=>$value) {
-            $params[":id_$key"] = $value;
-        }
+        $params = array('ids'=>$ids);
         
         return $this->crud->readMultipleRows($sql, $params);
     }
